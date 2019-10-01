@@ -1,126 +1,60 @@
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyWidget(),
+      title: 'Startup Name Generator',
+      home: RandomWords(),
     );
   }
 }
 
-class MyWidget extends StatelessWidget {
+class RandomWords extends StatefulWidget {
+  @override
+  RandomWordState createState() => RandomWordState();
+}
+
+class RandomWordState extends State<RandomWords> {
+  final List<WordPair> _suggestions = <WordPair>[];
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 50,
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        "Flutter McFlutter",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline,
-                      ),
-                      Text(
-                        "Experienced Developer",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "123 Main Street",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline,
-                  ),
-                  Text(
-                    "(415) 555-0198",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Icon(Icons.accessibility),
-                  Icon(Icons.timer),
-                  Icon(Icons.phone_android),
-                  Icon(Icons.phone_iphone),
-                ],
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Startup Name Generator'),
+      ),
+      body: _buildSuggestions(),
+    );
+  }
+
+  Widget _buildSuggestions() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        if (i.isOdd) {
+          return Divider();
+        }
+
+        final int index = i ~/ 2;
+
+        if (index >= _suggestions.length) {
+          _suggestions.addAll(generateWordPairs().take(10));
+        }
+
+        return ListTile(
+          title: Text(
+            _suggestions[index].asPascalCase,
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class GreenBox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.greenAccent,
-        border: Border.all(),
-      ),
+        );
+      },
     );
   }
 }
