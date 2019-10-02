@@ -1,68 +1,69 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
-      title: "My App",
       theme: ThemeData(
-          primarySwatch: Colors.green,
-          brightness: Brightness.light,
-          accentColor: Colors.red),
-      home: Homepage(),
+        primarySwatch: Colors.blue,
+      ),
+      home: LoginPage(),
     );
   }
 }
 
-class Homepage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _HomepageState extends State<Homepage> {
-  String myText = "Hello World";
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
+  AnimationController _iconAnimationController;
+  Animation<double> _iconAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _iconAnimationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    _iconAnimation = CurvedAnimation(
+      parent: _iconAnimationController,
+      curve: Curves.easeOut,
+    );
+
+    _iconAnimation.addListener(() => this.setState(() {}));
+    _iconAnimationController.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Homepage"),
-      ),
-      body: _buildBodyWidget(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: _changeText,
-      ),
-    );
-  }
-
-  void _changeText() {
-    setState(() {
-      myText = myText.startsWith("H") ? "Welcome to my app" : "Hello World";
-    });
-  }
-
-  Widget _buildBodyWidget() {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
+      backgroundColor: Colors.greenAccent,
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Image(
+            image: AssetImage("assets/girl.jpeg"),
+            color: Colors.black87,
+            colorBlendMode: BlendMode.darken,
+            fit: BoxFit.cover,
+          ),
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                myText,
-                style: TextStyle(fontSize: 24.0),
-              ),
+              FlutterLogo(
+                size: _iconAnimation.value * 100,
+              )
             ],
-          ),
-        ),
+          )
+        ],
       ),
     );
   }
