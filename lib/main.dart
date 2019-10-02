@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(new MaterialApp(
-    home: new Text("Hello World"),
-  ));
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: true,
+      title: "My App",
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Homepage"),
+        ),
+        body: Center(
+          child: Text("Hello World"),
+        ),
+      ),
+    );
+  }
 }
