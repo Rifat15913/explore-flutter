@@ -10,12 +10,65 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       title: "My App",
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Homepage"),
-        ),
-        body: Center(
-          child: Text("Hello World"),
+      theme: ThemeData(
+          primarySwatch: Colors.green,
+          brightness: Brightness.dark,
+          accentColor: Colors.red
+      ),
+      home: Homepage(),
+    );
+  }
+}
+
+class Homepage extends StatefulWidget {
+  @override
+  _HomepageState createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  String myText = "Hello World";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Homepage"),
+      ),
+      body: _buildBodyWidget(),
+    );
+  }
+
+  void _changeText() {
+    setState(() {
+      myText = myText.startsWith("H") ? "Welcome to my app" : "Hello World";
+    });
+  }
+
+  Widget _buildBodyWidget() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                myText,
+                style: TextStyle(fontSize: 24.0),
+              ),
+              RaisedButton(
+                child: Text(
+                  "Click",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: _changeText,
+                color: Colors.red[300],
+              )
+            ],
+          ),
         ),
       ),
     );
